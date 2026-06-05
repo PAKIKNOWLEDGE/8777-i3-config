@@ -15,6 +15,8 @@ exec_always /usr/libexec/kf6/polkit-kde-authentication-agent-1
 
 ### 空闲锁屏 — 10分钟无操作锁屏
 exec xautolock -time 10 -locker "i3lock -f -c 000000" -notify 30 -notifier "notify-send '即将锁屏'" &
+# 合盖休眠锁屏 — xss-lock 监听 systemd 休眠信号
+exec --no-startup-id xss-lock -- i3lock -f -c 000000 &
 
 ### 壁纸
 exec_always nitrogen --restore
@@ -25,13 +27,12 @@ exec_always fcitx5 -d --replace
 ### 通知
 exec dunst
 
-### PipeWire 音频（Fedora 用 systemd user service 管理，i3 不需要启动）
-
 ### 合成器 (透明/抗撕裂)
 exec picom -b --backend glx --vsync
 
-### 触摸板 (synaptics 驱动)
-exec_always synclient TapButton1=1 VertScrollDelta=-112 HorizScrollDelta=-112
+### 触摸板 (libinput 驱动)
+exec_always xinput set-prop "SynPS/2 Synaptics TouchPad" "libinput Tapping Enabled" 1
+exec_always xinput set-prop "SynPS/2 Synaptics TouchPad" "libinput Natural Scrolling Enabled" 1
 
 ### 键盘布局
 exec_always setxkbmap us
@@ -40,14 +41,11 @@ exec_always setxkbmap us
 # Basics:
     bindsym $mod+Return exec $term
     bindsym $mod+q kill
-    # 窗口切换
     bindsym $mod+Tab exec rofi -show window
-    # 启动器
     bindsym $mod+space exec $menu
     bindsym $mod+Shift+c reload
     bindsym $mod+Shift+r reload
     bindsym $mod+Shift+e exec i3-nagbar -t warning -m 'Exit i3?' -b 'Yes' 'i3-msg exit'
-    # 壁纸 GUI
     bindsym $mod+Shift+w exec nitrogen ~/图片/
 
 # Moving around:
@@ -127,18 +125,27 @@ bindsym $mod+r mode "resize"
     bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
     bindsym XF86MonBrightnessDown exec brightnessctl set 5%-
     bindsym XF86MonBrightnessUp exec brightnessctl set 5%+
-    bindsym Print exec flameshot gui -c
+    # 截图 (需要 flameshot)
+    bindsym Print exec flameshot gui              # GUI编辑（可保存/复制/钉住）
+    bindsym $mod+Print exec flameshot full -p ~/图片/截图  # 全屏 → 保存
+    bindsym Shift+Print exec flameshot full -c    # 全屏 → 剪贴板
+    # 剪贴板历史 (需要 greenclip)
+    exec_always greenclip daemon &
+    bindsym $mod+v exec rofi -modi "clipboard:greenclip print" -show clipboard
+    # 手动锁屏
+    bindsym $mod+Ctrl+l exec i3lock -f -c 000000
 
 ### 外观
-# 更方便拖动
-# 默认2
 default_border pixel 2
 gaps inner 10
 gaps outer 5
 
 ### 状态栏
 bar {
+    # 默认使用 i3status（轻量稳定）
+    # 想换 i3status-rust 的话，注释下面这行，去掉下一行的注释
     status_command i3status
+    # status_command i3status-rs /home/pakiknowledge/.config/i3status-rust/config.toml
     position top
     font pango:JetBrainsMono Nerd Font, Sarasa UI SC 12
     separator_symbol " │ "
