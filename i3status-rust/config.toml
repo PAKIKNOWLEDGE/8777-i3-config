@@ -1,5 +1,5 @@
 [theme]
-theme = "plain"
+theme = "native"
 
 [icons]
 icons = "material-nf"
@@ -26,7 +26,7 @@ interval = 2
 
 [[block]]
 block = "memory"
-format = " $icon $mem_used_percents.eng(w:1) "
+format = " $icon $mem_used.eng(w:1) "
 format_alt = " $icon_swap $swap_used_percents.eng(w:1) "
 interval = 10
 

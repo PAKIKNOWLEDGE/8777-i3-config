@@ -144,6 +144,7 @@ gaps outer 5
 bar {
     # 默认使用 i3status（轻量稳定）
     # 想换 i3status-rust 的话，注释下面这行，去掉下一行的注释
+    # ⚠ 本地机器（X250 双电池）用 i3status-rs，参考 ~/.config/i3/config
     status_command i3status
     # status_command i3status-rs /home/pakiknowledge/.config/i3status-rust/config.toml
     position top

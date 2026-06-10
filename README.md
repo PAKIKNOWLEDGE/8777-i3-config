@@ -135,13 +135,35 @@ cp -r /tmp/Colloid-kde/Kvantum/* ~/.config/Kvantum/
 
 ### Optional: i3status-rust
 
+**Fedora:**
 ```bash
 sudo dnf copr enable alternateved/i3status-rust
 sudo dnf install i3status-rust
-cp -r i3status-rust ~/.config/
 ```
 
-Then edit `~/.config/i3/config` bar section — swap the two `status_command` lines.
+**Debian (no package):**
+```bash
+# Option A — Nix (pulls binary, no build):
+nix profile install nixpkgs#i3status-rust
+
+# Option B — build from source (needs Rust toolchain):
+# git clone https://github.com/greshake/i3status-rust
+# cd i3status-rust && cargo build --release
+# cp target/release/i3status-rs ~/.local/bin/
+```
+
+Then copy config and edit bar:
+```bash
+cp -r i3status-rust ~/.config/
+# Then edit ~/.config/i3/config bar section — swap the two status_command lines.
+```
+
+**Dual battery (ThinkPad X250, T480, etc.):**
+
+i3status's built-in `battery all` can calculate combined percentage incorrectly
+on dual-battery machines. i3status-rust aggregates BAT0 + BAT1 correctly —
+just use the `battery` block as-is, no extra config needed. If you stick with
+i3status, see the [wrapper script](i3/battery-wrapper.sh) for a workaround.
 
 ### Optional: Matugen
 
