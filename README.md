@@ -218,10 +218,17 @@ systemctl --user enable --now pipewire pipewire-pulse wireplumber
 
 ### Touchpad
 
-Uses libinput. If tapping / scrolling doesn't work:
+Uses libinput. If tapping / scrolling doesn't work, first find your
+touchpad's actual name:
 ```bash
-xinput set-prop "SynPS/2 Synaptics TouchPad" "libinput Tapping Enabled" 1
-xinput set-prop "SynPS/2 Synaptics TouchPad" "libinput Natural Scrolling Enabled" 1
+xinput list | grep -i touch
+```
+
+Then use that name (varies by kernel/driver — e.g. X250 on newer kernels
+uses `"Synaptics TM3075-002"`, older ones used `"SynPS/2 Synaptics TouchPad"`):
+```bash
+xinput set-prop "Your-Touchpad-Name-Here" "libinput Tapping Enabled" 1
+xinput set-prop "Your-Touchpad-Name-Here" "libinput Natural Scrolling Enabled" 1
 ```
 
 ### Lock Screen
