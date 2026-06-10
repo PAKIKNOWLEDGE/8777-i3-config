@@ -170,6 +170,7 @@ No wrapper. No regex. No prayer.
 Yes, it's Rust. Yes, the dependency tree is visible from orbit. But it works,
 and sometimes that's the more important metric. Embrace the bloat. You're
 going to anyway.
+![](lj2wwgmaxo881.png)
 
 ### Optional: Matugen
 
