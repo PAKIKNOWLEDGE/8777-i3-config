@@ -158,18 +158,13 @@ cp -r i3status-rust ~/.config/
 # Then edit ~/.config/i3/config bar section — swap the two status_command lines.
 ```
 
-**Dual battery (ThinkPad X250, T480, etc.):** 🪫
+**Dual battery (ThinkPad X250, T480, etc.):** 🔋
 
-i3status (pure C, no dependencies, very lean, very minimal™) will confidently
-display a wrong percentage on dual-battery machines, because apparently two
-batteries are an edge case the C gods never anticipated. You can write a shell
-wrapper, pipe through sed with seventeen regex backtracks, or pray — or you can
-just use i3status-rust, which aggregates BAT0 + BAT1 correctly out of the box.
-No wrapper. No regex. No prayer.
-
-Yes, it's Rust. Yes, the dependency tree is visible from orbit. But it works,
-and sometimes that's the more important metric. Embrace the bloat. You're
-going to anyway.
+i3status's `battery all` works fine on dual-battery machines — just add
+`last_full_capacity = true` to the battery block in `i3status/config`.
+This makes i3status use `energy_full` (actual current capacity) instead
+of `energy_full_design` (factory spec), matching what upower reports.
+No wrapper. No Rust. No prayer.
 ![](lj2wwgmaxo881.png)
 
 ### Optional: Matugen
